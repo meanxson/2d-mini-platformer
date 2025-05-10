@@ -14,8 +14,9 @@ namespace Client
 
         private const string MusicVolumeKey = "MusicVolume";
         private const string EffectVolumeKey = "EffectVolume";
-        private const string MusicVolumeParam = "MusicVolume";
-        private const string EffectVolumeParam = "EffectVolume";
+        
+        private const string MusicVolumeParam = "MusicParameter";
+        private const string EffectVolumeParam = "EffectsParameter";
 
         protected override void OnOpen()
         {

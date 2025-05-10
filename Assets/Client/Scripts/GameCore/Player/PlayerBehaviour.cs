@@ -38,16 +38,19 @@ namespace Client
 
         [SerializeField, BoxGroup("Shoot parameter")]
         private float _bulletSpeed = 15f;
-        
-        [SerializeField, BoxGroup("Attack Delay")] private float _meleeCooldown = 0.5f;
-        [SerializeField, BoxGroup("Attack Delay")] private float _shootCooldown = 0.5f;
 
+        [SerializeField, BoxGroup("Attack Delay")]
+        private float _meleeCooldown = 0.5f;
+
+        [SerializeField, BoxGroup("Attack Delay")]
+        private float _shootCooldown = 0.5f;
 
 
         [SerializeField] private PlayerEnemyDetector _detector;
+        [SerializeField] private AudioSource _audioSource;
 
         public bool IsDied { get; private set; }
-        public bool IsWon { get; private set; }
+        public bool IsWon { get; set; }
 
 
         public event Action<float> HealthChanged;
@@ -62,7 +65,7 @@ namespace Client
         private List<BaseEnemy> _enemies;
 
         private SceneLoader _sceneLoader;
-        
+
         private float _meleeTimer;
         private float _shootTimer;
 
@@ -106,7 +109,7 @@ namespace Client
 
             if (_hitLockTimer > 0f)
                 _hitLockTimer -= Time.deltaTime;
-            
+
             if (_meleeTimer > 0f)
                 _meleeTimer -= Time.deltaTime;
 
@@ -127,7 +130,7 @@ namespace Client
             {
                 _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _jumpForce);
             }
-            
+
             if (_horizontal == 0)
             {
                 if (Input.GetButtonDown("Fire1") && _meleeTimer <= 0f)
@@ -143,6 +146,7 @@ namespace Client
 
                     _animator.SetTrigger(Attack);
                     _meleeTimer = _meleeCooldown;
+                    _audioSource.PlayOneShot(_audioSource.clip);
                 }
 
                 if (Input.GetButtonDown("Fire2") && _shootTimer <= 0f)
@@ -152,7 +156,6 @@ namespace Client
                     _shootTimer = _shootCooldown;
                 }
             }
-
         }
 
         private void FixedUpdate()
@@ -240,7 +243,7 @@ namespace Client
             _rigidbody.velocity = Vector2.zero;
             _rigidbody.AddForce(direction.normalized * 10f, ForceMode2D.Impulse);
         }
- 
+
         private void OnEnemyDetectEnter(BaseEnemy enemy)
         {
             _enemies.Add(enemy);

@@ -3,7 +3,7 @@
     public class BossEnemy : BaseEnemy
     {
         private PlayerBehaviour _player;
-        
+
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -18,7 +18,6 @@
 
         protected override void Die()
         {
-            _player.Win();
             Destroy(gameObject);
         }
 
